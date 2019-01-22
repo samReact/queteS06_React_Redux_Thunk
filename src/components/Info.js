@@ -1,24 +1,11 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { NumberOfSelectedArticles, Weight } from '.';
+import { NumberOfSelectedArticlesContainer, WeightContainer } from '.';
 
-const getSelectedArticlesTotalWeight = articles =>
-  articles
-    .filter(article => article.isSelected)
-    .reduce((sum, article) => sum + article.weight, 0);
-
-const getNumberOfSelectedArticles = articles =>
-  articles.filter(article => article.isSelected).length;
-
-const Info = ({ articles }) => (
+const Info = () => (
   <Fragment>
-    <NumberOfSelectedArticles value={getNumberOfSelectedArticles(articles)} />
-    <Weight value={getSelectedArticlesTotalWeight(articles)} />
+    <NumberOfSelectedArticlesContainer />
+    <WeightContainer />
   </Fragment>
 );
-
-Info.propTypes = {
-  articles: PropTypes.array.isRequired,
-};
 
 export default Info;

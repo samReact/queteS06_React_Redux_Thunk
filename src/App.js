@@ -1,58 +1,37 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
 
-import { ArticleList, Info } from './components';
+import { ArticleListContainer, Info } from './components';
 
 class App extends Component {
-  state = {
-    articles: [],
-    isLoading: true,
-  };
-
-  async componentDidMount() {
-    const response = await fetch(
-      'https://packing-list-weight-api.herokuapp.com/articles'
-    );
-    const articles = await response.json();
-    this.setState({
-      articles: articles.map(article => ({ ...article, isSelected: false })),
-      isLoading: false,
-    });
+  componentDidMount() {
+    this.props.fetchArticles();
   }
 
-  toggleArticleSelection = name => () => {
-    const { articles } = this.state;
-
-    this.setState({
-      articles: articles.map(article =>
-        article.name === name
-          ? { ...article, isSelected: !article.isSelected }
-          : article
-      ),
-    });
-  };
-
   render() {
-    const { articles, isLoading } = this.state;
+    const { areArticlesBeingFetched } = this.props;
 
     return (
       <div className="App">
-        {isLoading ? (
+        {areArticlesBeingFetched ? (
           <div data-selector="App-isLoading" style={{ marginTop: '1em' }}>
             Loading…
           </div>
         ) : (
           <Fragment>
-            <ArticleList
-              articles={articles}
-              toggleArticleSelection={this.toggleArticleSelection}
-            />
-            <Info articles={articles} />
+            <ArticleListContainer />
+            <Info />
           </Fragment>
         )}
       </div>
     );
   }
 }
+
+App.propTypes = {
+  areArticlesBeingFetched: PropTypes.bool.isRequired,
+  fetchArticles: PropTypes.func.isRequired,
+};
 
 export default App;
